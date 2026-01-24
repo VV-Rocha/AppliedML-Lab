@@ -3,3 +3,6 @@ data/
 
 ### No environments
 env_*/
+
+### No caches
+__pycache__/
