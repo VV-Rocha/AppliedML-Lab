@@ -20,7 +20,7 @@ def rk4_step(f, t, y, dt, **params):
     return y + (dt/6.0)*(k1 + 2*k2 + 2*k3 + k4)
 
 def store(T, y, config, store_dir):
-    with h5py.File(store_dir + f"data_gamma_{config["gamma"]}", "w") as f:
+    with h5py.File(store_dir + f"data_gamma_{config['gamma']}.h5", "w") as f:
         f.create_dataset("times", data = T)
         f.create_dataset("positions", data = y[:, 0])
         f.create_dataset("velocities", data = y[:, 1])
