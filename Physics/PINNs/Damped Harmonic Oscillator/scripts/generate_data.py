@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import h5py
 import sys
 
 sys.path.append("../solver/")
@@ -17,7 +16,7 @@ config["v0"] = 0.
 
 ### Physical Coefficients
 config["kappa"] = 1.
-config["gamma"] = 0.3
+config["gamma"] = 0.2
 
 ### Store folders
 config["store_dir"] = f"../data/simulations/damped_harmonic/"
@@ -30,4 +29,4 @@ fig, axs = plt.subplots(1)
 axs.plot(positions)
 axs.set_xlabel("t")
 axs.set_ylabel("x(t)")
-fig.savefig(plot_dir + f"oscillation_gamma_{config["gamma"]}.png", dpi=300)
+fig.savefig(plot_dir + f"oscillation_gamma_{config['gamma']}.png", dpi=300)
