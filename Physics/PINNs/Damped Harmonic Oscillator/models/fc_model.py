@@ -9,6 +9,7 @@ class FCNet(nn.Module):
         nlayers,
         nnodes,
         activation,
+        device,
     ):
         super().__init__()
         self.Nin = Nin
@@ -16,6 +17,7 @@ class FCNet(nn.Module):
         self.nlayers = nlayers
         self.nnodes = nnodes
         self.activation = activation
+        self.device = device
 
         self.gen_model()
         
@@ -30,7 +32,7 @@ class FCNet(nn.Module):
         
         self.layers.append(nn.Linear(self.nnodes, self.Nout))
 
-        self.net = nn.Sequential(*self.layers)
+        self.net = nn.Sequential(*self.layers).to(self.device)
 
     def forward(self, x):
         x = self.net(x)
@@ -48,5 +50,5 @@ class PINNs_FCNet(FCNet):
             *args,
             **kwargs,
         )
-        self.gamma = nn.Parameter(torch.tensor(gamma0))
-        self.kappa = nn.Parameter(torch.tensor(kappa0))
+        self.gamma = nn.Parameter(torch.tensor(gamma0, device=self.device), requires_grad=True)
+        self.kappa = nn.Parameter(torch.tensor(kappa0, device=self.device), requires_grad=True)
