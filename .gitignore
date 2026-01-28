@@ -1,5 +1,6 @@
 ### No data upload
 data/
+*.png
 
 ### No environments
 env_*/
