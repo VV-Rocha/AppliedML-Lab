@@ -1,0 +1,66 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\title{PINNs - Damped Harmonic Oscillator}
+\author{V. Rocha}
+\date{\vspace{-0ex}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%	Packages 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage[margin=1in,letterpaper]{geometry}
+\usepackage[final]{hyperref}
+\hypersetup{
+			colorlinks=true,
+			linkcolor=blue,
+			citecolor=blue,
+			filecolor=magenta,
+			urlcolor=blue
+}
+\usepackage{amsfonts}
+\usepackage[]{cite}
+\usepackage{physics}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{comment}
+\usepackage[title]{appendix}
+\usepackage{rotating}
+\usepackage{tikz}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    
+    Short abstract.
+
+\end{abstract}
+
+\section{Introduction}
+
+	The one-dimensional damped harmonic oscillator is described by the following PDE
+\begin{equation}
+	\ddot{x} + \gamma \dot{x} + \kappa x = 0,
+\label{eq: pde damped harmonic}
+\end{equation}
+	where $\kappa$ is the spring constant and $\gamma$ is a dampening coefficient.
+
+
+\appendix
+
+\section{Runge-Kutta 4}
+
+	Considering the PDE in equation~\ref{eq: pde damped harmonic} the Runge-Kutta 4 (RK4) method follows the framework
+\begin{align}
+	\dot{x} & = \dot{v}  \\
+	\dot{v} & = -\gamma \dot{x} - \kappa x
+\end{align}
+
+\bibliographystyle{unsrt}
+\bibliography{mybib}
+
+\end{document}
