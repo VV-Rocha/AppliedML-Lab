@@ -7,3 +7,8 @@ env_*/
 
 ### No caches
 __pycache__/
+
+### No auxiliary Latex files
+*.aux
+*.log
+*.synctex.gz
