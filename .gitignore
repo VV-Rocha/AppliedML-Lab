@@ -12,3 +12,5 @@ __pycache__/
 *.aux
 *.log
 *.synctex.gz
+*.bbl
+*.out
