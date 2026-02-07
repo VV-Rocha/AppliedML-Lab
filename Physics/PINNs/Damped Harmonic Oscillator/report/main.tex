@@ -49,10 +49,48 @@
 \end{equation}
 	where $\kappa$ is the spring constant and $\gamma$ is a dampening coefficient.
 
+	First, we began with generating the dataset by solving equation~\ref{eq: pde damped harmonic} using the Runge-Kutta 4 method (see~\ref{sec: RK4}). The equation is solver for an initial position $x_0=1$ and velocity $v_0=0$. The physical parameters are $\kappa=1$ and $\gamma=0.2$. The simulation is performed for a $t_{max}=50$ in $N_{steps}=512$. The timeseries of this simulation is represented in Figure~\ref{fig: prediction}.
+
+	To compare the traditional purely data-driven models and the PINNs models we train them separately for the same duration of time. Both models receive the time $t$ as input parameter and output a position $x$. The PINNs model in this case will be performing both an inversion problem of the physical parameters $\left(\kappa, \gamma\right)$ which are considered during the training as trainable parameters and an forward problem by forecasting the dynamics outside the boundary conditions (BC), see Figure~\ref{fig: prediction}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.75\textwidth]{Figures/damped_harmonic/pinns/predicted_state.png}
+	\caption{Timeseries of the damped harmonic oscillator. The green line is the RK4 simulated points. The red dots are the 64 points used for training while the black crosses are the boundary conditions. The output model predictions are represented by blue for the purely data-driven model and orange for the PINNs model.}
+\label{fig: prediction}
+\end{figure}
+
+	The neural network models are both a $12$-layer model each with $32$ nodes with hyperbolic tangent as activation function. Each training is performed for a total of $2\times 10^5$ with a learning rate of $1\times 10^{-3}$. The loss function of the data-driven model is the mean squared error
+\begin{equation}
+	L_{mse} = \frac{1}{N_D} \sum_{i=1}^{N_D} \left(\hat{x}\left(t_i\right) - x_i\right)^2,
+\end{equation}
+	where $N_D$ is the number of training points. The loss function of the PINNs model has the BC and the residual of the PDE as
+\begin{equation}
+	L_{PINNs} = \frac{1}{N_c}\sum_{i=1}^{N_c} |\ddot{x}\left(t_i\right) + \gamma\dot{x}\left(t_i\right) + \kappa x\left(t_i\right)|^2 + \sum_{j=1}^{2} \left(\hat{x}\left(t^{BC}_i\right) - x^{BC}_i\right)^2 + L_{mse}
+\end{equation}
+	where $N_c$ is the number of collocations points. We used $N_c=128$ while the BC are for times $t^{BC}_1=0$ and $t^{BC}_2=t_{max}/2$ and $x^{BC}_1$ and $x^{BC}_2$ are the corresponding label points.
+
+	From Figure~\ref{fig: prediction} how in the region where data points are available both models perform similarly. However, when we attempt to predict the behaviour outside the data-informed region the purely data-driven model diverges from the expected behaviour while the PINNs model is still able to predict nearly one more oscillation. This showcases the possibility of improved modelling through a better understanding of the underlying physics by the PINNs model when contrasted against the purely data-driven models. Furthermore, as is shown in Figure~\ref{fig: params} the PINNs model correctly predicted the physical parameters as is shown through the convergence of these to the expected values.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.75\textwidth]{Figures/damped_harmonic/pinns/params.png}
+	\caption{Evolution of the predicted physical parameters during the training of the PINNs model. The blue line is the evolution of the corresponding trainable parameters $\gamma$ and $\kappa$ while the horizontal dashed black line is the expected values.}
+\label{fig: params}
+\end{figure}
+
+	Lastly, we must consider the loss throughout the training. As shown in Figure~\ref{fig: losses}, the losses over the data points of both models converge to about the same order of magnitude highlighting their similar performance in the data-informed region in between the boundary conditions. However, for the PINNs model we see that the residual loss function is about three orders of magnitude larger. We believe improvements of this model should be aimed at lowering this loss which, in principal, results in an improved understanding of the underlying physics and consequently can improve the prediction outside the data-informed region.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.75\textwidth]{Figures/damped_harmonic/pinns/losses.png}
+	\caption{Loss function evolution during training for the purely data-driven model (top) and PINNs model (bottom).}
+\label{fig: losses}
+\end{figure}
 
 \appendix
 
-\section{Runge-Kutta 4}
+\section{\label{sec: RK4}Runge-Kutta 4}
 
 	Considering the PDE in equation~\ref{eq: pde damped harmonic} the Runge-Kutta 4 (RK4) method follows the framework
 \begin{align}
