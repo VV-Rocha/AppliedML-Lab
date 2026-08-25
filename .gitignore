@@ -7,6 +7,7 @@ env_*/
 
 ### No caches
 __pycache__/
+*.lock
 
 ### No auxiliary Latex files
 *.aux
